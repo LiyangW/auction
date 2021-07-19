@@ -6,9 +6,9 @@ defmodule Auction do
   Contexts are also responsible for managing your data, regardless
   if it comes from the database, an external API or others.
   """
-  alias Auction.{FakeRepo, Item}
+  alias Auction.{Repo, Item}
 
-  @repo FakeRepo
+  @repo Repo
 
   def list_items do
     @repo.all(Item)
@@ -20,5 +20,21 @@ defmodule Auction do
 
   def get_item_by(attrs) do
     @repo.get_by(Item, attrs)
+  end
+
+  def insert_item(attrs) do
+    Item
+    |> struct(attrs)
+    |> @repo.insert
+  end
+
+  def delete_item(%Auction.Item{} = item) do
+    @repo.delete(item)
+  end
+
+  def update_item(%Auction.Item{} = item, updates) do
+    item
+    |> Item.changeset(updates)
+    |> @repo.update()
   end
 end
